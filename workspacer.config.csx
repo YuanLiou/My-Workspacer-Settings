@@ -218,6 +218,7 @@ return new Action<IConfigContext>((IConfigContext context) =>
         manager.Subscribe(winCtrl, Keys.P, () => actionMenu.ShowMenu(actionMenuBuilder), "show menu");
         manager.Subscribe(winShift, Keys.Escape, () => context.Enabled = !context.Enabled, "toggle enabled/disabled");
         manager.Subscribe(winCtrl, Keys.I, () => context.ToggleConsoleWindow(), "toggle console window");
+        manager.Subscribe(winShift, Keys.W, () => workspaces.FocusedWorkspace.CloseFocusedWindow(), "Close focused window");
 
     };
     setKeybindings();
