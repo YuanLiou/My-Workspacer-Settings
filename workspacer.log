@@ -21,3 +21,5 @@
    at workspacer.workspacer.Start()
    at workspacer.Program.Run()
    at workspacer.Program.Main(String[] args)
+2024-01-27 10:50:59.5436|ERROR|workspacer.KeybindManager| The Key Combination `Shift, Win-Left` is already bound to action: `move focused to primary window`
+2024-01-27 10:50:59.5789|ERROR|workspacer.KeybindManager| The Key Combination `Shift, Win-Right` is already bound to action: `change to next layout engine`

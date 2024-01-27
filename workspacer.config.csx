@@ -18,12 +18,12 @@ return new Action<IConfigContext>((IConfigContext context) =>
 {
     /* Variables */
     var fontSize = 9;
-    var barHeight = 18;
-    var fontName = "Cascadia Code PL";
+    var barHeight = 20;
+    var fontName = "等距更紗黑體 TC";
     var background = new Color(0x0, 0x0, 0x0);
 
     /* Config */
-    context.CanMinimizeWindows = true;
+    context.CanMinimizeWindows = false;
 
     /* Gap */
     var gap = barHeight - 8;
@@ -38,13 +38,14 @@ return new Action<IConfigContext>((IConfigContext context) =>
         DefaultWidgetBackground = background,
         LeftWidgets = () => new IBarWidget[]
         {
-            new WorkspaceWidget()
+            new WorkspaceWidget(),
+            new TitleWidget(),
         },
         RightWidgets = () => new IBarWidget[]
         {
-            // new ActiveLayoutWidget(),
+            new ActiveLayoutWidget(),
             // new BatteryWidget(),
-            new TimeWidget(1000, "yyyy/MM/dd HH:mm:ss"),
+            new TimeWidget(1000, "yyyy/MM/dd ddd tt hh:mm"),
         }
     });
 
@@ -69,8 +70,6 @@ return new Action<IConfigContext>((IConfigContext context) =>
         ("1", defaultLayouts()),
         ("2", defaultLayouts()),
         ("3", defaultLayouts()),
-        ("4", defaultLayouts()),
-        ("5", defaultLayouts()),
     };
 
     foreach ((string name, ILayoutEngine[] layouts) in workspaces)
@@ -181,7 +180,6 @@ return new Action<IConfigContext>((IConfigContext context) =>
 
         var workspaces = context.Workspaces;
 
-
         manager.UnsubscribeAll();
         manager.Subscribe(MouseEvent.LButtonDown, () => workspaces.SwitchFocusedMonitorToMouseLocation());
 
@@ -189,8 +187,12 @@ return new Action<IConfigContext>((IConfigContext context) =>
         manager.Subscribe(winCtrl, Keys.Left, () => workspaces.SwitchToPreviousWorkspace(), "switch to previous workspace");
         manager.Subscribe(winCtrl, Keys.Right, () => workspaces.SwitchToNextWorkspace(), "switch to next workspace");
 
-        manager.Subscribe(winShift, Keys.Left, () => workspaces.MoveFocusedWindowToPreviousMonitor(), "move focused window to previous monitor");
-        manager.Subscribe(winShift, Keys.Right, () => workspaces.MoveFocusedWindowToNextMonitor(), "move focused window to next monitor");
+        manager.Subscribe(winShift, Keys.Left, () => workspaces.FocusedWorkspace.FocusPreviousWindow(), "move focused to previous window");
+        manager.Subscribe(winShift, Keys.Right, () => workspaces.FocusedWorkspace.FocusNextWindow(), "move focused to next window");
+
+        // Up, Down keys
+        manager.Subscribe(winShift, Keys.Up, () => workspaces.FocusedWorkspace.FocusPrimaryWindow(), "move focused to primary window");
+        manager.Subscribe(winShift, Keys.Down, () => workspaces.FocusedWorkspace.NextLayoutEngine(), "change to next layout engine");
 
         // H, L keys
         manager.Subscribe(winShift, Keys.H, () => workspaces.FocusedWorkspace.ShrinkPrimaryArea(), "shrink primary area");
@@ -200,12 +202,10 @@ return new Action<IConfigContext>((IConfigContext context) =>
         manager.Subscribe(winShift, Keys.K, () => workspaces.FocusedWorkspace.SwapFocusAndNextWindow(), "swap focus and next window");
         manager.Subscribe(winShift, Keys.J, () => workspaces.FocusedWorkspace.SwapFocusAndPreviousWindow(), "swap focus and previous window");
 
-        // move focused window to 1,2,3,4 workspace
+        // move focused window to 1,2,3 workspace
         manager.Subscribe(winCtrl, Keys.D1, () => context.Workspaces.MoveFocusedWindowToWorkspace(0), "switch focused window to workspace 1");
         manager.Subscribe(winCtrl, Keys.D2, () => context.Workspaces.MoveFocusedWindowToWorkspace(1), "switch focused window to workspace 2");
         manager.Subscribe(winCtrl, Keys.D3, () => context.Workspaces.MoveFocusedWindowToWorkspace(2), "switch focused window to workspace 3");
-        manager.Subscribe(winCtrl, Keys.D4, () => context.Workspaces.MoveFocusedWindowToWorkspace(3), "switch focused window to workspace 4");
-        manager.Subscribe(winCtrl, Keys.D5, () => context.Workspaces.MoveFocusedWindowToWorkspace(4), "switch focused window to workspace 5");
 
         // Add, Subtract keys
         manager.Subscribe(winCtrl, Keys.Add, () => gapPlugin.IncrementInnerGap(), "increment inner gap");
