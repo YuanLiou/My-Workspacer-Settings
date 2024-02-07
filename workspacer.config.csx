@@ -191,8 +191,15 @@ return new Action<IConfigContext>((IConfigContext context) =>
         manager.Subscribe(winShift, Keys.Right, () => workspaces.FocusedWorkspace.FocusNextWindow(), "move focused to next window");
 
         // Up, Down keys
-        manager.Subscribe(winShift, Keys.Up, () => workspaces.FocusedWorkspace.FocusPrimaryWindow(), "move focused to primary window");
-        manager.Subscribe(winShift, Keys.Down, () => workspaces.FocusedWorkspace.NextLayoutEngine(), "change to next layout engine");
+        manager.Subscribe(winShift, Keys.Up, () => workspaces.FocusedWorkspace.FocusPreviousWindow(), "move focused to previous window");
+        manager.Subscribe(winShift, Keys.Down, () => workspaces.FocusedWorkspace.FocusNextWindow(), "move focused to next window");
+
+        // Focus on the primary window
+        manager.Subscribe(winShift, Keys.Home, () => workspaces.FocusedWorkspace.FocusPrimaryWindow(), "move focused to primary window");
+        
+        // Change Layout
+        manager.Subscribe(winShift, Keys.PageUp, () => workspaces.FocusedWorkspace.PreviousLayoutEngine(), "change to previous layout engine");
+        manager.Subscribe(winShift, Keys.PageDown, () => workspaces.FocusedWorkspace.NextLayoutEngine(), "change to next layout engine");
 
         // H, L keys
         manager.Subscribe(winShift, Keys.H, () => workspaces.FocusedWorkspace.ShrinkPrimaryArea(), "shrink primary area");
