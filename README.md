@@ -1,5 +1,10 @@
 # RayYuan's Workspacer Settings
 
+[Workspacer: A Tiling Window Manager For Windows](https://workspacer.org/)
+[github](https://github.com/workspacer/workspacer)
+
+This configs is forked from [kimjunte/workspacer](https://github.com/kimjunte/workspacer)
+
 ## Key info
  - winCtrl => Windows Key + Ctrl
  - winShift => Windows Key + Shift
